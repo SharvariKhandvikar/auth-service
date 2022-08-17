@@ -1,6 +1,8 @@
 package com.cts.project.service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,13 @@ public class UserService implements UserDetailsService {
 		log.info("BEGIN   -   [loadUserByUsername()]");
 		log.debug("Username : " + username);
 
-		UserLogin userLogin = userRepository.findById(username).orElseThrow();
+		//UserLogin userLogin = userRepository.findById(username).orElseThrow();
+		Optional<UserLogin> list = userRepository.findById(username);
+		UserLogin userLogin = list.get();
+		if(userLogin == null) {
+			throw new NoSuchElementException("No such data present!!!");
+		}
+		
 		log.debug("UserLogin : " + userLogin);
 		UserDetails user = new User(userLogin.getUserName(), userLogin.getPassword(), new ArrayList<>());
 		log.debug("User : " + user);
