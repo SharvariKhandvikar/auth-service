@@ -6,5 +6,5 @@ Resources:
         TaskDefinition: "arn:aws:ecs:ap-south-1:860061945305:task-definition/authenticationservice:1"
         LoadBalancerInfo:
           ContainerName: "authenticationservice"
-          ContainerPort: "80"
+          ContainerPort: "8084"
         PlatformVersion: "LATEST"
