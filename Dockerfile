@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM public.ecr.aws/docker/library/openjdk:latest
 VOLUME /tmp
 EXPOSE 8084
 ADD target/*.jar app.jar
