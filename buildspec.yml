@@ -24,7 +24,6 @@ phases:
     - echo $(docker images)
     - echo Pushing docker image
     - docker push $REPOSITORY_URI:latest
-    - docker push $REPOSITORY_URI:$IMAGE_TAG
     - echo push completed
     - printf '[{"name":"%s","imageUri":"%s"}]' authenticationservice $REPOSITORY_URI:latest > imagedefinitions.json
 artifacts:
