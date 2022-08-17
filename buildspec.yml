@@ -2,30 +2,30 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto8
+      java: corretto17
   pre_build:
     commands:
     - echo Logging in to Amazon ECR...
     - aws --version
-    - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 860061945305.dkr.ecr.ap-south-1.amazonaws.com
-    - REPOSITORY_URI=860061945305.dkr.ecr.ap-south-1.amazonaws.com/authenticationservice
-    - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-    - IMAGE_TAG=${COMMIT_HASH:=latest}
+    - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 348248362259.dkr.ecr.ap-south-1.amazonaws.com
+    - IMAGE_NAME=authenticationservice
+    - IMAGE_URI=348248362259.dkr.ecr.ap-south-1.amazonaws.com/authenticationservice:latest
+    - CONTAINER_NAME=authenticationservice
   build:
     commands:
     - echo Build started on `date`
-    - echo Building the Docker image...
+    - echo $IMAGE_NAME
     - mvn clean package -Ddockerfile.skip
-    - docker build -t $REPOSITORY_URI:latest .
+    - docker build -t $IMAGE_NAME .
   post_build:
     commands:
-    - printenv
     - echo Build completed on `date`
     - echo $(docker images)
+    - docker tag $IMAGE_NAME $IMAGE_URI
     - echo Pushing docker image
-    - docker push $REPOSITORY_URI:latest
+    - docker push $IMAGE_URI
     - echo push completed
-    - printf '[{"name":"%s","imageUri":"%s"}]' authenticationservice $REPOSITORY_URI:latest > imagedefinitions.json
+    - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_URI > imagedefinitions.json
 artifacts:
   files:
   - imagedefinitions.json
