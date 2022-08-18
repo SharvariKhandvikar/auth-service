@@ -20,7 +20,6 @@ import com.cts.project.service.JwtUtil;
 import com.cts.project.service.UserService;
 
 @RestController
-//@Api(value = "Endpoints for Authentication Service")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
@@ -32,10 +31,9 @@ public class AuthenticationController {
 	@Autowired
 	private UserService userService;
 
+	// for logging in the user
 	@PostMapping("/login")
-	//@ApiOperation(value = "userLogin", notes = "tokes user credentials and generate a JWT", httpMethod = "POST", response = ResponseEntity.class)
 	public Token login(
-			//@ApiParam(name = "userloginCredentials", value = "Login credentials of the User.") 
 			@RequestBody UserLogin userLoginCredentials)
 			throws CredentialsException {
 		
@@ -52,11 +50,9 @@ public class AuthenticationController {
 
 	}
 
+	//For validating the token
 	@GetMapping("/validate")
-	//@ApiOperation(value = "tokenValidation", notes = "returns boolean after validating JWT", httpMethod = "GET", response = ResponseEntity.class)
-	public 	boolean getValidity(
-			//@ApiParam(name = "token", value = "JWT for current user") 
-			@RequestHeader(name = "Authorization") String token) {
+	public 	boolean getValidity(@RequestHeader(name = "Authorization") String token) {
 		log.info("BEGIN   -   [getValidty(token)]");
 		
 			if(token.equals("")) {
@@ -78,6 +74,7 @@ public class AuthenticationController {
 			}
 	}
 
+	//For performing the health check
 	@GetMapping("/health-check")
 	public ResponseEntity<String> healthCheck() {
 		return new ResponseEntity<>("OK", HttpStatus.OK);

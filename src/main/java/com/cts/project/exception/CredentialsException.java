@@ -1,5 +1,6 @@
 package com.cts.project.exception;
 
+//This exception will be thrown when credentials did not match
 public class CredentialsException extends Exception {
 	
 	/**

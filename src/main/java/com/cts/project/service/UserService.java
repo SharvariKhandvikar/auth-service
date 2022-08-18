@@ -24,21 +24,25 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	UserRepository userRepository;
 
+	//Loads the user 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		log.info("BEGIN   -   [loadUserByUsername()]");
-		log.debug("Username : " + username);
+		log.debug("Username : {}",username);
 
-		//UserLogin userLogin = userRepository.findById(username).orElseThrow();
 		Optional<UserLogin> list = userRepository.findById(username);
-		UserLogin userLogin = list.get();
+		UserLogin userLogin = new UserLogin();
+		if(!list.isEmpty()) {
+		userLogin = list.get();
+		}
+		
 		if(userLogin == null) {
 			throw new NoSuchElementException("No such data present!!!");
 		}
 		
-		log.debug("UserLogin : " + userLogin);
+		log.debug("UserLogin : {}" , userLogin);
 		UserDetails user = new User(userLogin.getUserName(), userLogin.getPassword(), new ArrayList<>());
-		log.debug("User : " + user);
+		log.debug("User : {}" , user);
 
 		log.info("END   -   [loadUserByUsername()]");
 		return user;

@@ -1,5 +1,6 @@
 package com.cts.project.model;
 
+//This is the token class to receive the generated token
 public class Token {
 	
 	private String token;
